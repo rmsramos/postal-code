@@ -2,9 +2,9 @@
 
 namespace Rmsramos\PostalCode;
 
+use Rmsramos\PostalCode\Commands\PostalCodeCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use Rmsramos\PostalCode\Commands\PostalCodeCommand;
 
 class PostalCodeServiceProvider extends PackageServiceProvider
 {
