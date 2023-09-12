@@ -1,19 +1,10 @@
-# CEP integration with ViaCep
+# Filament CEP integration with ViaCep
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/rmsramos/postal-code.svg?style=flat-square)](https://packagist.org/packages/rmsramos/postal-code)
-[![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/rmsramos/postal-code/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/rmsramos/postal-code/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/rmsramos/postal-code/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/rmsramos/postal-code/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/rmsramos/postal-code.svg?style=flat-square)](https://packagist.org/packages/rmsramos/postal-code)
 
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
-
-## Support us
-
-[<img src="https://github-ads.s3.eu-central-1.amazonaws.com/postal-code.jpg?t=1" width="419px" />](https://spatie.be/github-ad-click/postal-code)
-
-We invest a lot of resources into creating [best in class open source packages](https://spatie.be/open-source). You can support us by [buying one of our paid products](https://spatie.be/open-source/support-us).
-
-We highly appreciate you sending us a postcard from your hometown, mentioning which of our package(s) you are using. You'll find our address on [our contact page](https://spatie.be/about-us). We publish all received postcards on [our virtual postcard wall](https://spatie.be/open-source/postcards).
+This package provides custom form field for Filament integration with ViaCep.
 
 ## Installation
 
@@ -23,37 +14,42 @@ You can install the package via composer:
 composer require rmsramos/postal-code
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="postal-code-migrations"
-php artisan migrate
-```
-
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="postal-code-config"
-```
-
-This is the contents of the published config file:
-
-```php
-return [
-];
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="postal-code-views"
-```
-
 ## Usage
 
 ```php
-$postalCode = new Rmsramos\PostalCode();
-echo $postalCode->echoPhrase('Hello, Rmsramos!');
+
+use Filament\Forms\Components\TextInput;
+use Rmsramos\PostalCode\Components\PostalCode;
+
+public static function form(Form $form): Form
+{
+    return $form
+        ->schema([
+            PostalCode::make('postal_code')
+                ->viaCep(
+                    errorMessage: 'CEP inválido.', // Custom message to display if the CEP is invalid.
+                    setFields: [
+                        'street'        => 'logradouro',
+                        'number'        => 'numero',
+                        'complement'    => 'complemento',
+                        'district'      => 'bairro',
+                        'city'          => 'localidade',
+                        'state'         => 'uf'
+                    ]
+                ),
+
+            TextInput::make('street'),
+            TextInput::make('number')
+                 ->extraAlpineAttributes([
+                     'x-on:cep.window' => "\$el.focus()",
+                 ]),,
+            TextInput::make('complement'),
+            TextInput::make('district'),
+            TextInput::make('city'),
+            TextInput::make('state'),
+        ])
+}
+
 ```
 
 ## Testing
