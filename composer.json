@@ -4,7 +4,8 @@
     "keywords": [
         "rmsramos",
         "laravel",
-        "postal-code"
+        "postal-code",
+        "filament"
     ],
     "homepage": "https://github.com/rmsramos/postal-code",
     "license": "MIT",
@@ -17,6 +18,7 @@
     ],
     "require": {
         "php": "^8.1",
+        "filament/filament": "^3.0",
         "spatie/laravel-package-tools": "^1.14.0",
         "illuminate/contracts": "^10.0"
     },
